@@ -3,7 +3,7 @@
 Vous retrouverez sur ce dépôt l'ensemble des TP réalisés lors du module Synchronisation et Programme Parallèle.  Ces TPs sont des TPs de l'ESIR réalisés en 2ème année.
 Chaque dossier contient un TP différent et toutes les informations nécessaires pour le compiler et le faire fonctionner.
 
-## 📱 Liste des TP
+## 💻 Liste des TP
         
 | TP | Contenue | 
 | -------- | -------- | 
