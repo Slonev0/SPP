@@ -1,4 +1,7 @@
 package spp.exercice1;
+/**
+ * MATHURIN MELVIN & VOISIN ENZO
+ */
 
 /**
  * Classe Foo, implémentation de SemaphoreInterface
