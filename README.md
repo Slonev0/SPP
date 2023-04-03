@@ -8,11 +8,10 @@ Chaque dossier contient un TP différent et toutes les informations nécessaires
 | TP | Contenue | 
 | -------- | -------- | 
 | [TPIntro](https://github.com/Slonev0/SPP/tree/main/TPIntro)    | Création de thread   |
-| [TP1-2](https://github.com/Slonev0/SPP/tree/main/TP1)    | Création de moniteur et utilisation d'exchangeur   | 
-| [TP4]()    |     | 
-| [TP5]()    |     | 
-| [TP6]()    |     | 
-| [TP7]()|    | 
+| [TP1-2](https://github.com/Slonev0/SPP/tree/main/TP1)          | Création de moniteur et utilisation d'exchangeur   | 
+| [TP3-4]()                                                      |     | 
+| [TP5]()                                                        |     | 
+ 
         
 
 
