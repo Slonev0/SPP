@@ -35,6 +35,9 @@ public class Foo implements SemaphoreInterface {
      */
     @Override
     public synchronized void up() {
+        while(waiting > 0){
+            waiting--;
+        }
         count++;
         notify();
     }
@@ -45,7 +48,7 @@ public class Foo implements SemaphoreInterface {
      */
     @Override
     public synchronized void down() throws InterruptedException {
-        if(count <= 0){
+        while(count <= 0){
             waiting++;
             wait();
         }
@@ -60,6 +63,7 @@ public class Foo implements SemaphoreInterface {
     public synchronized int releaseAll() {
         int nbThread = waiting;
         waiting = 0;
+        count += nbThread;
         notifyAll();
         return nbThread;
     }
