@@ -5,6 +5,8 @@ public class Main {
         IImageFilteringEngine im = new MyImageFilteringEngine();
         im.loadImage("./TEST_IMAGES/15226222451_5fd668d81a_c.jpg");
         im.applyFilter(new GrayLevelFilter());
+        im.writeOutPngImage("./output_image/15226222451_5fd668d81a_c_grey.png");
+        im.loadImage("./output_image/15226222451_5fd668d81a_c_grey.png");
         im.applyFilter(new GaussianContourExtractorFilter());
         im.writeOutPngImage("./output_image/15226222451_5fd668d81a_c_gaussian_contour.png");
     }

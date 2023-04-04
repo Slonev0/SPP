@@ -11,6 +11,7 @@ public class MyImageFilteringEngine implements IImageFilteringEngine {
     @Override
     public void loadImage(String inputImage) throws Exception {
         MyImg = ImageIO.read(new File(inputImage));
+        outputImg = ImageIO.read(new File(inputImage));
     }
 
     @Override
@@ -31,6 +32,10 @@ public class MyImageFilteringEngine implements IImageFilteringEngine {
 
     @Override
     public void applyFilter(IFilter someFilter) {
-        //someFilter.applyFilterAtPoint(MyImg.getWidth(),MyImg.getHeight(),MyImg,outputImg);
+        for(int x = 0; x < MyImg.getWidth(); x++){
+            for(int y = 0; y < MyImg.getHeight();y++){
+                someFilter.applyFilterAtPoint(x,y,MyImg,outputImg);
+            }
+        }
     }
 }

@@ -1,12 +1,14 @@
 package spp.tp3_4;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.lang.Math;
 
 public class GaussianContourExtractorFilter implements IFilter {
     private final int margin;
 
     public GaussianContourExtractorFilter() {
-        this.margin = 3;
+        this.margin = 5;
     }
 
     @Override
@@ -14,58 +16,34 @@ public class GaussianContourExtractorFilter implements IFilter {
         return margin;
     }
 
+    private int sign(int value){
+        if (value < 0){
+            return -1;
+        } else if (value > 0) {
+            return +1;
+        }
+        return 0;
+    }
     @Override
     public void applyFilterAtPoint(int x, int y, BufferedImage imgIn, BufferedImage imgOut) {
-        int width = imgIn.getWidth();
-        int height = imgIn.getHeight();
+        double gradx = 0;
+        double grady = 0;
 
-        // Make sure the x and y coordinates are within the image bounds
-        if (x < margin || x >= width - margin || y < margin || y >= height - margin) {
-            return;
-        }
-
-        // Compute the weighted sum of pixel values in the neighborhood
-        double sum = 0.0;
-        double weightSum = 0.0;
-        for (int j = -margin; j <= margin; j++) {
-            for (int i = -margin; i <= margin; i++) {
-                int pixel = imgIn.getRGB(x + i, y + j);
-                double weight = getGaussianWeight(i, j, margin);
-                sum += weight * getGrayLevel(pixel);
-                weightSum += weight;
+        for (int dx = -margin; dx < margin; dx++){
+            for (int dy = -margin; dy < margin; dy++){
+                int xNew = x + dx;
+                int yNew = y + dy;
+                if (xNew >= 0 && xNew < imgIn.getWidth() && yNew >= 0 && yNew < imgIn.getHeight()) {
+                    //❤️
+                    Color c = new Color(imgIn.getRGB(x, y));
+                    gradx += sign(dx)*c.getBlue()*Math.exp( (-1/4) * ( Math.pow(dx,2) + Math.pow(dy,2) ) );
+                    grady += sign(dy)*c.getBlue()*Math.exp( (-1/4) * ( Math.pow(dx,2) + Math.pow(dy,2) ) );
+                }
             }
         }
-
-        // Compute the weighted average of pixel values
-        int grayLevel = (int) Math.round(sum / weightSum);
-
-        // Set the pixel value in the output image
-        int pixel = getRGB(grayLevel);
-        imgOut.setRGB(x, y, pixel);
-    }
-    private double getGaussianWeight(int x, int y, int sigma) {
-        double sigmaSq = sigma * sigma;
-        double distanceSq = x * x + y * y;
-        double exponent = -distanceSq / (2 * sigmaSq);
-        double weight = Math.exp(exponent);
-        return weight;
-    }
-
-    private int getGrayLevel(int pixel) {
-        int alpha = (pixel >> 24) & 0xff;
-        int red = (pixel >> 16) & 0xff;
-        int green = (pixel >> 8) & 0xff;
-        int blue = pixel & 0xff;
-        int grayLevel = (red + green + blue) / 3;
-        return grayLevel;
-    }
-
-    private int getRGB(int grayLevel) {
-        int alpha = 0xff << 24;
-        int red = grayLevel << 16;
-        int green = grayLevel << 8;
-        int blue = grayLevel;
-        int rgb = alpha | red | green | blue;
-        return rgb;
+        double norm = Math.sqrt(Math.pow(gradx, 2) + Math.pow(grady, 2));
+        int pixel = (int) Math.max(0, 255 - (0.1*norm));
+        Color newColor = new Color(pixel, pixel, pixel);
+        imgOut.setRGB(x, y, newColor.getRGB());
     }
 }
