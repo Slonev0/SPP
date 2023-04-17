@@ -18,7 +18,7 @@ public interface IImageFilteringEngine {
   public void writeOutPngImage(String outFile) throws Exception ;
   public void setImg(BufferedImage newImg) ;
   public BufferedImage getImg() ;
-  public void applyFilter(IFilter someFilter) ;
+  public void applyFilter(IFilter someFilter) throws InterruptedException;
   
 } // EndInterface IImageFilteringEngine
 
