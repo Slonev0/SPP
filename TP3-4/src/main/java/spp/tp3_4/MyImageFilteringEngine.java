@@ -23,6 +23,7 @@ public class MyImageFilteringEngine implements IImageFilteringEngine {
     @Override
     public void setImg(BufferedImage newImg) {
         MyImg = newImg;
+        outputImg = MyImg;
     }
 
     @Override
