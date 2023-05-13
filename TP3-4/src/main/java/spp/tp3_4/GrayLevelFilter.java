@@ -20,13 +20,17 @@ public class GrayLevelFilter implements IFilter {
 
     @Override
     public void applyFilterAtPoint(int x, int y, BufferedImage imgIn, BufferedImage imgOut) {
-        Color c = new Color(imgIn.getRGB(x, y));
-        int r = c.getRed();
-        int g = c.getGreen();
-        int b = c.getBlue();
-        //int gray = (int) (0.299 * r + 0.587 * g + 0.114 * b); // grayscale formula
-        int gray = (int) (0.3 * r + 0.3 * g + 0.3 * b);
-        Color newColor = new Color(gray, gray, gray);
-        imgOut.setRGB(x - getMargin(), y - getMargin(), newColor.getRGB());
+        int rgb = imgIn.getRGB(x, y);
+        // extracting red, green and blue components from rgb integer
+        int red = (rgb >> 16) & 0x000000FF;
+        int green = (rgb >> 8) & 0x000000FF;
+        int blue = (rgb) & 0x000000FF;
+        // computing new color from extracted components
+
+        int newRgb = (red + green + blue) / 3;
+
+        newRgb = (newRgb << 16) | (newRgb << 8) | newRgb;
+
+        imgOut.setRGB(x, y, newRgb);
     }
 }

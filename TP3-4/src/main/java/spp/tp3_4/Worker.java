@@ -15,25 +15,51 @@ public class Worker extends Thread{
     private IFilter filter;
     private BufferedImage MyImg;
     private BufferedImage outputImg;
-    private CyclicBarrier barrier;
+    private CyclicBarrier startBarrier;
+    private CyclicBarrier endBarrier;
 
-
-    public Worker(int nb_Thread, CyclicBarrier barrier) {
-        this.barrier = barrier;
+    public Worker(){
+        super();
+    }
+    public Worker(CyclicBarrier startBarrier, CyclicBarrier endBarrier) {
+        this.startBarrier = startBarrier;
+        this.endBarrier = endBarrier;
     }
 
     @Override
     public void run() {
+        int min = filter.getMargin();
+        if (startX < min) {
+            startX = min;
+        }
+        if (startY < min) {
+            startY = min;
+        }
+        int maxX = MyImg.getWidth() - filter.getMargin();
+        if (endX > maxX) {
+            endX = maxX;
+        }
+        int maxY = MyImg.getHeight() - filter.getMargin();
+        if (endY > maxY) {
+            endY = maxY;
+        }
+
+        try {
+            startBarrier.await(); // Wait for all threads to be ready to start processing
+        } catch (InterruptedException | BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+
         for(int x = startX; x < endX; x++){
-            for(int y = startY; y < endY;y++){
-                System.out.println("filter apply at point ("+x+","+y+")");
-                filter.applyFilterAtPoint(x,y,MyImg,outputImg);
+            for(int y = startY; y < endY;y++) {
+                filter.applyFilterAtPoint(x, y, MyImg, outputImg);
             }
         }
+
         try {
-            barrier.await();
+            endBarrier.await();
         } catch (InterruptedException | BrokenBarrierException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

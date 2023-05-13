@@ -33,10 +33,23 @@ public class MyImageFilteringEngine implements IImageFilteringEngine {
 
     @Override
     public void applyFilter(IFilter someFilter) {
-        for(int x = 0; x < MyImg.getWidth(); x++){
-            for(int y = 0; y < MyImg.getHeight();y++){
+        setOutImg(someFilter.getMargin());
+        //this part is here to be sure the output image is in the bounds
+        int min = someFilter.getMargin();
+        int maxX = MyImg.getWidth() - someFilter.getMargin();
+        int maxY = MyImg.getHeight() - someFilter.getMargin();
+
+        for(int x = min; x < maxX; x++){
+            for(int y = min; y < maxY;y++){
                 someFilter.applyFilterAtPoint(x,y,MyImg,outputImg);
             }
         }
+    }
+
+    private void setOutImg(int margin) {
+        outputImg = new BufferedImage(MyImg.getWidth() - (margin * 2),
+                MyImg.getHeight() - (margin * 2),
+                BufferedImage.TYPE_INT_RGB);
+
     }
 }

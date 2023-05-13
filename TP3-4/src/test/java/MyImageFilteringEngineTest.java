@@ -1,11 +1,17 @@
 
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import spp.tp3_4.GaussianContourExtractorFilter;
 import spp.tp3_4.GrayLevelFilter;
 import spp.tp3_4.MyImageFilteringEngine;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -89,71 +95,104 @@ public class MyImageFilteringEngineTest {
             }
         }
     }
-/*
-    @Test
-    public void testFourCirclesFilters() {
+
+    @org.junit.Test
+    public void testGrayLevelFilter_FourCircles() throws IOException {
+
+        BufferedImage inputImage = ImageIO.read(new File("./TEST_IMAGES/FourCircles.png"));
+        BufferedImage expectedOutputImage = ImageIO.read(
+                new File("./TEST_IMAGES/FourCircles_gray.png"));
+        MyImageFilteringEngine engine = new MyImageFilteringEngine();
+        engine.setImg(inputImage);
+        engine.applyFilter(new GrayLevelFilter());
+
         try {
-            String inputImage = "FourCircles.png";
-            String expectedOutputGrayImage = "FourCircles_Gray.png";
-            String expectedOutputContourImage = "FourCircles_Gray_Contour.png";
-
-            // Load input image and expected output images
-            BufferedImage inputImg = ImageIO.read(new File(inputImage));
-            BufferedImage expectedGrayImg = ImageIO.read(new File(expectedOutputGrayImage));
-            BufferedImage expectedContourImg = ImageIO.read(new File(expectedOutputContourImage));
-
-            // Create image filtering engine
-            IImageFilteringEngine engine = new MyImageFilteringEngine();
-
-            // Test GrayLevelFilter
-            engine.setImg(inputImg);
-            engine.applyFilter(new GrayLevelFilter());
-            BufferedImage outputGrayImg = engine.getImg();
-            assertEquals("GrayLevelFilter output does not match expected output", expectedGrayImg, outputGrayImg);
-
-            // Test GaussianContourExtractorFilter
-            engine.setImg(inputImg);
-            engine.applyFilter(new GaussianContourExtractorFilter());
-            BufferedImage outputContourImg = engine.getImg();
-            assertEquals("GaussianContourExtractorFilter output does not match expected output", expectedContourImg, outputContourImg);
-
+            engine.writeOutPngImage("./TEST_IMAGES/FourCircles_gray_TEST.png");
         } catch (Exception e) {
             e.printStackTrace();
-            assertEquals("Exception occurred", "", e.getMessage());
         }
+
+        BufferedImage actualOutputImage = ImageIO.read(
+                new File("./TEST_IMAGES/FourCircles_gray_TEST.png"));
+
+        assert_equal(expectedOutputImage, actualOutputImage);
     }
 
     @Test
-    public void test15226222451Filters() {
+    public void testGrayLevelFilter_SecondImage() throws IOException {
+
+        BufferedImage inputImage = ImageIO.read(new File("./TEST_IMAGES/15226222451_5fd668d81a_c.jpg"));
+        BufferedImage expectedOutputImage = ImageIO.read(new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray.png"));
+        MyImageFilteringEngine engine = new MyImageFilteringEngine();
+        engine.setImg(inputImage);
+        engine.applyFilter(new GrayLevelFilter());
+
         try {
-            String inputImage = "15226222451_5fd668d81a_c.jpg";
-            String expectedOutputGrayImage = "15226222451_5fd668d81a_c_Gray.png";
-            String expectedOutputContourImage = "15226222451_5fd668d81a_c_Gray_Contour.png";
-
-            // Load input image and expected output images
-            BufferedImage inputImg = ImageIO.read(new File(inputImage));
-            BufferedImage expectedGrayImg = ImageIO.read(new File(expectedOutputGrayImage));
-            BufferedImage expectedContourImg = ImageIO.read(new File(expectedOutputContourImage));
-
-            // Create image filtering engine
-            IImageFilteringEngine engine = new MyImageFilteringEngine();
-
-            // Test GrayLevelFilter
-            engine.setImg(inputImg);
-            engine.applyFilter(new GrayLevelFilter());
-            BufferedImage outputGrayImg = engine.getImg();
-            assertEquals("GrayLevelFilter output does not match expected output", expectedGrayImg, outputGrayImg);
-
-            // Test GaussianContourExtractorFilter
-            engine.setImg(inputImg);
-            engine.applyFilter(new GaussianContourExtractorFilter());
-            BufferedImage outputContourImg = engine.getImg();
-            assertEquals("GaussianContourExtractorFilter output does not match expected output", expectedContourImg, outputContourImg);
-
+            engine.writeOutPngImage("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_TEST.png");
         } catch (Exception e) {
             e.printStackTrace();
-            assertEquals("Exception occurred", "", e.getMessage());
         }
-    }*/
 
+        BufferedImage actualOutputImage = ImageIO.read(
+                new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_TEST.png"));
+
+        assert_equal(expectedOutputImage, actualOutputImage);
+    }
+
+    @Test
+    private void testGaussianContour_FourCircles() throws IOException {
+
+        BufferedImage inputImage = ImageIO.read(new File("./TEST_IMAGES/FourCircles.png"));
+        BufferedImage expectedOutputImage = ImageIO.read(
+                new File("./TEST_IMAGES/FourCircles_Gray_Contour.png"));
+        MyImageFilteringEngine engine = new MyImageFilteringEngine();
+        engine.setImg(inputImage);
+        engine.applyFilter(new GrayLevelFilter());
+        engine.applyFilter(new GaussianContourExtractorFilter());
+
+        try {
+            engine.writeOutPngImage("./TEST_IMAGES/FourCircles_Gray_Contour_TEST.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage actualOutputImage = ImageIO.read(
+                new File("./TEST_IMAGES/FourCircles_Gray_Contour_TEST.png"));
+
+        assert_equal(expectedOutputImage, actualOutputImage);
+    }
+
+    @Test
+    public void testGaussianContour_SecondImage() throws IOException {
+
+        BufferedImage inputImage = ImageIO.read(new File("./TEST_IMAGES/15226222451_5fd668d81a_c.jpg"));
+        BufferedImage expectedOutputImage = ImageIO.read(
+                new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gaussian_Contour.png"));
+        MyImageFilteringEngine engine = new MyImageFilteringEngine();
+        engine.setImg(inputImage);
+        engine.applyFilter(new GrayLevelFilter());
+        engine.applyFilter(new GaussianContourExtractorFilter());
+
+        try {
+            engine.writeOutPngImage("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_Contour_TEST.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage actualOutputImage = ImageIO.read(
+                new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_Contour_TEST.png"));
+
+        assert_equal(expectedOutputImage, actualOutputImage);
+    }
+
+    private void assert_equal(BufferedImage expected, BufferedImage actual) {
+
+        for (int y = 0; y < expected.getHeight(); y++) {
+            for (int x = 0; x < expected.getWidth(); x++) {
+                Assert.assertEquals(Integer.toHexString(expected.getRGB(x, y)), Integer.toHexString(actual.getRGB(x, y)));
+            }
+        }
+    }
 }
+
+

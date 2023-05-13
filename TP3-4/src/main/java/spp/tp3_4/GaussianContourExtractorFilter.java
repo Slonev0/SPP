@@ -43,11 +43,8 @@ public class GaussianContourExtractorFilter implements IFilter {
         }
         double norm = Math.sqrt(Math.pow(gradx, 2) + Math.pow(grady, 2));
         int blue = (int) Math.max(0, 255 - 0.5 * norm);
-
-        int newRgb = (blue << 16) | (blue << 8) | blue;
-        imgOut.setRGB(x, y, newRgb);
+        int shade = blue & 0x000000FF;
+        int newRgb = shade << 16 | shade << 8 | shade;
+        imgOut.setRGB(x - getMargin(), y - getMargin(), newRgb);
     }
-
-
-
 }
