@@ -1,5 +1,8 @@
 package spp.tp3_4;
 
+/**
+ * Class that show how to use the image filtering engine
+ */
 public class Main {
     static public void main(String[] args) throws Exception {
         IImageFilteringEngine im = new MyImageFilteringEngine();

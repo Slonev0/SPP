@@ -136,6 +136,11 @@ public class MyImageFilteringEngineTest {
         BufferedImage actualOutputImage = ImageIO.read(
                 new File("./TEST_IMAGES/FourCircles_gray_TEST.png"));
 
+        Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                expectedOutputImage.getWidth());
+
+        Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                actualOutputImage.getHeight());
         assert_equal(expectedOutputImage, actualOutputImage);
     }
 
@@ -156,7 +161,11 @@ public class MyImageFilteringEngineTest {
 
         BufferedImage actualOutputImage = ImageIO.read(
                 new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_TEST.png"));
+        Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                expectedOutputImage.getWidth());
 
+        Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                actualOutputImage.getHeight());
         assert_equal(expectedOutputImage, actualOutputImage);
     }
 
@@ -179,7 +188,11 @@ public class MyImageFilteringEngineTest {
 
         BufferedImage actualOutputImage = ImageIO.read(
                 new File("./TEST_IMAGES/FourCircles_Gaussian_Contour_TEST.png"));
+        Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                expectedOutputImage.getWidth());
 
+        Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                actualOutputImage.getHeight());
         assert_equal(expectedOutputImage, actualOutputImage);
     }
 
@@ -202,7 +215,11 @@ public class MyImageFilteringEngineTest {
 
         BufferedImage actualOutputImage = ImageIO.read(
                 new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_Contour_TEST.png"));
+        Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                expectedOutputImage.getWidth());
 
+        Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                actualOutputImage.getHeight());
         assert_equal(expectedOutputImage, actualOutputImage);
     }
 

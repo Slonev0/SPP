@@ -143,7 +143,11 @@ public class MultiThreadedImageFilteringEngineTest {
 
             BufferedImage actualOutputImage = ImageIO.read(
                     new File("./TEST_IMAGES/FourCircles_gray_TEST.png"));
+            Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                    expectedOutputImage.getWidth());
 
+            Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                    actualOutputImage.getHeight());
             assert_equal(expectedOutputImage, actualOutputImage);
         }
     }
@@ -168,7 +172,11 @@ public class MultiThreadedImageFilteringEngineTest {
 
             BufferedImage actualOutputImage = ImageIO.read(
                     new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_TEST.png"));
+            Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                    expectedOutputImage.getWidth());
 
+            Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                    actualOutputImage.getHeight());
             assert_equal(expectedOutputImage, actualOutputImage);
         }
     }
@@ -195,7 +203,11 @@ public class MultiThreadedImageFilteringEngineTest {
 
             BufferedImage actualOutputImage = ImageIO.read(
                     new File("./TEST_IMAGES/FourCircles_Gaussian_Contour_TEST.png"));
+            Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                    expectedOutputImage.getWidth());
 
+            Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                    actualOutputImage.getHeight());
             assert_equal(expectedOutputImage, actualOutputImage);
         }
     }
@@ -222,7 +234,11 @@ public class MultiThreadedImageFilteringEngineTest {
 
             BufferedImage actualOutputImage = ImageIO.read(
                     new File("./TEST_IMAGES/15226222451_5fd668d81a_c_Gray_Contour_TEST.png"));
+            Assert.assertEquals("width not equal", actualOutputImage.getWidth(),
+                    expectedOutputImage.getWidth());
 
+            Assert.assertEquals("height not the equal", expectedOutputImage.getHeight(),
+                    actualOutputImage.getHeight());
             assert_equal(expectedOutputImage, actualOutputImage);
         }
     }
@@ -231,7 +247,7 @@ public class MultiThreadedImageFilteringEngineTest {
 
         for (int y = 0; y < expected.getHeight(); y++) {
             for (int x = 0; x < expected.getWidth(); x++) {
-                Assert.assertEquals(Integer.toHexString(expected.getRGB(x, y)), Integer.toHexString(actual.getRGB(x, y)));
+                Assert.assertEquals("look on " + x +", "+ y, Integer.toHexString(expected.getRGB(x, y)), Integer.toHexString(actual.getRGB(x, y)));
             }
         }
     }

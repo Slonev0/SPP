@@ -15,6 +15,9 @@ import javax.swing.JFrame;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+/**
+ * Class that contains the experiment about the execution time of the filters with different number of threads
+ */
 public class Experiment {
     public static void main(String[] args) throws Exception {
         Object[] result = experiment_one_gray();
@@ -35,6 +38,12 @@ public class Experiment {
         System.out.println("Experiment size gaussian done");
     }
 
+    /**
+     * Experiment about the execution time of the gray filter with different number of threads
+     * @return Object[] containing the data to plot, Object[0] is a double[][] containing the data,
+     * Object[1] is a String[] containing the labels
+     * @throws Exception
+     */
     private static Object[] experiment_one_gray() throws Exception {
         double[][] tab = new double[10][11];
         String[] xLabel = new String[14];
@@ -67,6 +76,12 @@ public class Experiment {
         return result;
     }
 
+    /**
+     * Experiment about the execution time of the gaussian filter with different number of threads
+     * @return Object[] containing the data to plot, Object[0] is a double[][] containing the data,
+     * Object[1] is a String[] containing the labels
+     * @throws Exception
+     */
     private static Object[] experiment_one_gaussian() throws Exception {
         double[][] tab = new double[10][11];
         BufferedImage inputImage = ImageIO.read(new File("./TEST_IMAGES/15226222451_75d515f540_o.jpg"));
@@ -98,6 +113,12 @@ public class Experiment {
         return result;
     }
 
+    /**
+     * Experiment about the execution time of the gray filter with different number of pixels
+     * @return Object[] containing the data to plot, Object[0] is a double[][] containing the data,
+     * Object[1] is a String[] containing the labels
+     * @throws Exception
+     */
     private static Object[] experiment_size_grey() throws Exception{
         String[] pictures = {"5fd668d81a_t", "5fd668d81a_m", "5fd668d81a_n", "5fd668d81a", "5fd668d81a_z",
                 "5fd668d81a_c", "a49b1a624b_h", "75d515f540_o"};
@@ -124,6 +145,12 @@ public class Experiment {
         return result;
     }
 
+    /**
+     * Experiment about the execution time of the gaussian filter with different number of pixels
+     * @return Object[] containing the data to plot, Object[0] is a double[][] containing the data,
+     * Object[1] is a String[] containing the labels
+     * @throws Exception
+     */
     private static Object[] experiment_size_gaussian() throws Exception{
         String[] pictures = {"5fd668d81a_t", "5fd668d81a_m", "5fd668d81a_n", "5fd668d81a", "5fd668d81a_z",
                 "5fd668d81a_c", "a49b1a624b_h", "75d515f540_o"};
@@ -150,6 +177,12 @@ public class Experiment {
         return result;
     }
 
+    /**
+     * Method to plot the result of an experiment
+     * @param tab the data to plot
+     * @param xLabel the labels of the x-axis (and the title of yLabel)
+     * @param title the title of the plot
+     */
     private static void plotExperiment(double[][] tab, String[] xLabel,  String title){
         double[] means = calculateMeans(tab);
         double[] ecartType = getEcartType(tab, means);
@@ -207,7 +240,7 @@ public class Experiment {
     /**
      * Calcule le tableau moyen de plusieurs tableaux de valeurs.
      *
-     * @param values un tableau de teableaux de valeurs
+     * @param values un tableau de tableaux de valeurs
      * @return le tableau moyen
      */
     private static double[] calculateMeans(double[][] values) {
@@ -218,6 +251,12 @@ public class Experiment {
         return means;
     }
 
+    /**
+     * Calcule la moyenne d'une colonne d'un tableau de valeurs.
+     * @param values un tableau de tableaux de valeurs
+     * @param i l'indice de la colonne
+     * @return
+     */
     private static double mean_multiplevalues(double[][] values, int i) {
         double sum = 0;
         for (int j = 0; j < values.length; j++) {
@@ -226,6 +265,12 @@ public class Experiment {
         return sum / values.length;
     }
 
+    /**
+     * Calcule le tableau des écarts-types de plusieurs tableaux de valeurs.
+     * @param values un tableau de tableaux de valeurs
+     * @param mean le tableau moyen
+     * @return le tableau des écarts-types
+     */
     private static double[] getEcartType(double[][] values, double[] mean){
         double[] ecartType = new double[values[0].length];
         for (int i = 0; i < values[0].length; i++) {
@@ -234,6 +279,13 @@ public class Experiment {
         return ecartType;
     }
 
+    /**
+     * Calcule l'écart-type d'une colonne d'un tableau de valeurs.
+     * @param values un tableau de tableaux de valeurs
+     * @param i l'indice de la colonne
+     * @param mean la moyenne de la colonne
+     * @return l'écart-type de la colonne
+     */
     private static double ecartType_multiplevalues(double[][] values, int i, double mean) {
         double sum = 0;
         for (int j = 0; j < values.length; j++) {
