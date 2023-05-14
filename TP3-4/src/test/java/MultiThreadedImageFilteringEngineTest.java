@@ -3,7 +3,6 @@ import org.junit.jupiter.api.Test;
 import spp.tp3_4.GaussianContourExtractorFilter;
 import spp.tp3_4.GrayLevelFilter;
 import spp.tp3_4.MultiThreadedImageFilteringEngine;
-import spp.tp3_4.MyImageFilteringEngine;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MultiThreadedImageFilteringEngineTest {
 
     @Test
-    public void testGrayLevelFilterWhiteRectangle() throws InterruptedException {
+    public void testGrayLevelFilterWhiteRectangle() throws InterruptedException, IOException {
         // create white rectangle image
         BufferedImage img = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
@@ -30,12 +29,19 @@ public class MultiThreadedImageFilteringEngineTest {
             MultiThreadedImageFilteringEngine engine = new MultiThreadedImageFilteringEngine(k);
             engine.setImg(img);
             engine.applyFilter(new GrayLevelFilter());
-            BufferedImage outputImg = engine.getImg();
+            try {
+                engine.writeOutPngImage("./TEST_IMAGES/WhiteRectangleGrayMultithread.png");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            BufferedImage outputImage = ImageIO.read(
+                    new File("./TEST_IMAGES/WhiteRectangleGrayMultithread.png"));
 
             // assert that output image is grayscale
-            for (int x = 0; x < outputImg.getWidth(); x++) {
-                for (int y = 0; y < outputImg.getHeight(); y++) {
-                    Color color = new Color(outputImg.getRGB(x, y));
+            for (int x = 0; x < outputImage.getWidth(); x++) {
+                for (int y = 0; y < outputImage.getHeight(); y++) {
+                    Color color = new Color(outputImage.getRGB(x, y));
                     assertEquals(color.getRed(), color.getGreen());
                     assertEquals(color.getRed(), color.getBlue());
                 }
@@ -44,7 +50,7 @@ public class MultiThreadedImageFilteringEngineTest {
     }
 
     @Test
-    public void testGrayLevelFilterBlackRectangle() throws InterruptedException {
+    public void testGrayLevelFilterBlackRectangle() throws InterruptedException, IOException {
         // create black rectangle image
         BufferedImage img = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
@@ -58,12 +64,19 @@ public class MultiThreadedImageFilteringEngineTest {
             MultiThreadedImageFilteringEngine engine = new MultiThreadedImageFilteringEngine(k);
             engine.setImg(img);
             engine.applyFilter(new GrayLevelFilter());
-            BufferedImage outputImg = engine.getImg();
+            try {
+                engine.writeOutPngImage("./TEST_IMAGES/BlackRectangleGrayMultithread.png");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            BufferedImage outputImage = ImageIO.read(
+                    new File("./TEST_IMAGES/BlackRectangleGrayMultithread.png"));
 
             // assert that output image is grayscale
-            for (int x = 0; x < outputImg.getWidth(); x++) {
-                for (int y = 0; y < outputImg.getHeight(); y++) {
-                    Color color = new Color(outputImg.getRGB(x, y));
+            for (int x = 0; x < outputImage.getWidth(); x++) {
+                for (int y = 0; y < outputImage.getHeight(); y++) {
+                    Color color = new Color(outputImage.getRGB(x, y));
                     assertEquals(color.getRed(), color.getGreen());
                     assertEquals(color.getRed(), color.getBlue());
                 }
@@ -72,7 +85,7 @@ public class MultiThreadedImageFilteringEngineTest {
     }
 
     @Test
-    public void testGrayLevelFilterColorRectangles() throws InterruptedException {
+    public void testGrayLevelFilterColorRectangles() throws InterruptedException, IOException {
         // create image with color rectangles
         BufferedImage img = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
@@ -90,14 +103,21 @@ public class MultiThreadedImageFilteringEngineTest {
             MultiThreadedImageFilteringEngine engine = new MultiThreadedImageFilteringEngine(k);
             engine.setImg(img);
             engine.applyFilter(new GrayLevelFilter());
-            BufferedImage outputImg = engine.getImg();
+            try {
+                engine.writeOutPngImage("./TEST_IMAGES/ColoredRectangleGrayMultithread.png");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            BufferedImage outputImage = ImageIO.read(
+                    new File("./TEST_IMAGES/ColoredRectangleGrayMultithread.png"));
 
             // assert that output image is grayscale
-            for (int x = 0; x < outputImg.getWidth(); x++) {
-                for (int y = 0; y < outputImg.getHeight(); y++) {
-                    Color color = new Color(outputImg.getRGB(x, y));
-                    assertEquals(color.getRed(), color.getGreen());
+            for (int x = 0; x < outputImage.getWidth(); x++) {
+                for (int y = 0; y < outputImage.getHeight(); y++) {
+                    Color color = new Color(outputImage.getRGB(x, y));
                     assertEquals(color.getRed(), color.getBlue());
+                    assertEquals(color.getRed(), color.getGreen());
                 }
             }
         }
@@ -154,11 +174,11 @@ public class MultiThreadedImageFilteringEngineTest {
     }
 
     @Test
-    private void testGaussianContour_FourCircles() throws IOException, InterruptedException {
+    public void testGaussianContour_FourCircles() throws IOException, InterruptedException {
 
         BufferedImage inputImage = ImageIO.read(new File("./TEST_IMAGES/FourCircles.png"));
         BufferedImage expectedOutputImage = ImageIO.read(
-                new File("./TEST_IMAGES/FourCircles_Gray_Contour.png"));
+                new File("./TEST_IMAGES/FourCircles_gaussian_contour.png"));
 
         int[] test_value = {1, 2, 4, 8, 16, 32};
         for(int k : test_value) {
@@ -168,13 +188,13 @@ public class MultiThreadedImageFilteringEngineTest {
             engine.applyFilter(new GaussianContourExtractorFilter());
 
             try {
-                engine.writeOutPngImage("./TEST_IMAGES/FourCircles_Gray_Contour_TEST.png");
+                engine.writeOutPngImage("./TEST_IMAGES/FourCircles_Gaussian_Contour_TEST.png");
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             BufferedImage actualOutputImage = ImageIO.read(
-                    new File("./TEST_IMAGES/FourCircles_Gray_Contour_TEST.png"));
+                    new File("./TEST_IMAGES/FourCircles_Gaussian_Contour_TEST.png"));
 
             assert_equal(expectedOutputImage, actualOutputImage);
         }

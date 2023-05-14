@@ -14,8 +14,8 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
     private BufferedImage inputImage;
     private BufferedImage outputImage;
     private List<Worker> workers;
-    public static CyclicBarrier startBarrier;
-    public static CyclicBarrier endBarrier;
+    public CyclicBarrier startBarrier;
+    public CyclicBarrier endBarrier;
     Runnable barrierAction = () -> {
         System.out.println("All threads at the barrier. release the barrier");
     };
@@ -59,36 +59,27 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
 
         int startX = 0;
         int startY = 0;
-        System.out.println("width: " + width);
-        System.out.println("height: " + height);
 
         for (Worker worker : workers){
             worker.setFilter(someFilter);
-            //worker.setImgIn(inputImage);
-            //worker.setImgOut(outputImage);
             worker.setMyImg(inputImage);
             worker.setOutputImg(outputImage);
 
             worker.setStartX(startX);
             worker.setStartY(startY);
-            System.out.println("Worker" + worker.getName() + " set startX to " + startX);
-            System.out.println("Worker" + worker.getName() + " set startY to " + startY);
-
 
 
             int endX = startX + pixelsPerWorker;
             if (extraPixels > 0) {
                 worker.setEndX(Math.min(endX + 1, width));
-                System.out.println("Worker" + worker.getName() + " set endX to " + Math.min(endX + 1, width));
             }
             else {
                 worker.setEndX(Math.min(endX, width));
-                System.out.println("Worker" + worker.getName() + " set endX to " + Math.min(endX, width));
             }
 
             int endY = startY + height;
             worker.setEndY(endY);
-            System.out.println("Worker" + worker.getName() + " set endY to " + endY);
+            //System.out.println("Worker" + worker.getName() + " set endY to " + endY);
 
             extraPixels--;
             startX = endX;
@@ -99,7 +90,6 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
         }
         workers.get(workers.size()-1).setEndX(width);
         workers.get(workers.size()-1).setEndY(height);
-
     }
 
 
@@ -112,7 +102,7 @@ public class MultiThreadedImageFilteringEngine implements IImageFilteringEngine 
         setUpWorkers(someFilter);
 
         for (Thread worker : workers) {
-            System.out.println("Starting worker " + worker.getName());
+            //System.out.println("Starting worker " + worker.getName());
             worker.start();
         }
         try {

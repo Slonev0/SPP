@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MyImageFilteringEngineTest {
 
     @Test
-    public void testGrayLevelFilterWhiteRectangle() {
+    public void testGrayLevelFilterWhiteRectangle() throws IOException {
         // create white rectangle image
         BufferedImage img = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
@@ -30,12 +30,19 @@ public class MyImageFilteringEngineTest {
         MyImageFilteringEngine engine = new MyImageFilteringEngine();
         engine.setImg(img);
         engine.applyFilter(new GrayLevelFilter());
-        BufferedImage outputImg = engine.getImg();
+        try {
+            engine.writeOutPngImage("./TEST_IMAGES/WhiteRectangleGray.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage outputImage = ImageIO.read(
+                new File("./TEST_IMAGES/WhiteRectangleGray.png"));
 
         // assert that output image is grayscale
-        for (int x = 0; x < outputImg.getWidth(); x++) {
-            for (int y = 0; y < outputImg.getHeight(); y++) {
-                Color color = new Color(outputImg.getRGB(x, y));
+        for (int x = 0; x < outputImage.getWidth(); x++) {
+            for (int y = 0; y < outputImage.getHeight(); y++) {
+                Color color = new Color(outputImage.getRGB(x, y));
                 assertEquals(color.getRed(), color.getGreen());
                 assertEquals(color.getRed(), color.getBlue());
             }
@@ -43,7 +50,7 @@ public class MyImageFilteringEngineTest {
     }
 
     @Test
-    public void testGrayLevelFilterBlackRectangle() {
+    public void testGrayLevelFilterBlackRectangle() throws IOException {
         // create black rectangle image
         BufferedImage img = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
@@ -55,12 +62,19 @@ public class MyImageFilteringEngineTest {
         MyImageFilteringEngine engine = new MyImageFilteringEngine();
         engine.setImg(img);
         engine.applyFilter(new GrayLevelFilter());
-        BufferedImage outputImg = engine.getImg();
+        try {
+            engine.writeOutPngImage("./TEST_IMAGES/BlackRectangleGray.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage outputImage = ImageIO.read(
+                new File("./TEST_IMAGES/BlackRectangleGray.png"));
 
         // assert that output image is grayscale
-        for (int x = 0; x < outputImg.getWidth(); x++) {
-            for (int y = 0; y < outputImg.getHeight(); y++) {
-                Color color = new Color(outputImg.getRGB(x, y));
+        for (int x = 0; x < outputImage.getWidth(); x++) {
+            for (int y = 0; y < outputImage.getHeight(); y++) {
+                Color color = new Color(outputImage.getRGB(x, y));
                 assertEquals(color.getRed(), color.getGreen());
                 assertEquals(color.getRed(), color.getBlue());
             }
@@ -68,7 +82,7 @@ public class MyImageFilteringEngineTest {
     }
 
     @Test
-    public void testGrayLevelFilterColorRectangles() {
+    public void testGrayLevelFilterColorRectangles() throws IOException {
         // create image with color rectangles
         BufferedImage img = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = img.createGraphics();
@@ -84,14 +98,21 @@ public class MyImageFilteringEngineTest {
         MyImageFilteringEngine engine = new MyImageFilteringEngine();
         engine.setImg(img);
         engine.applyFilter(new GrayLevelFilter());
-        BufferedImage outputImg = engine.getImg();
+        try {
+            engine.writeOutPngImage("./TEST_IMAGES/ColoredRectangesGrayTest.png");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        BufferedImage outputImage = ImageIO.read(
+                new File("./TEST_IMAGES/ColoredRectangesGrayTest.png"));
 
         // assert that output image is grayscale
-        for (int x = 0; x < outputImg.getWidth(); x++) {
-            for (int y = 0; y < outputImg.getHeight(); y++) {
-                Color color = new Color(outputImg.getRGB(x, y));
-                assertEquals(color.getRed(), color.getGreen());
-                assertEquals(color.getRed(), color.getBlue());
+        for (int x = 0; x < outputImage.getWidth(); x++) {
+            for (int y = 0; y < outputImage.getHeight(); y++) {
+                Color color = new Color(outputImage.getRGB(x, y));
+                Assert.assertEquals("look on "+ x +", "+ y,color.getRed(), color.getGreen());
+                Assert.assertEquals("look on "+ x +", "+ y,color.getRed(), color.getBlue());
             }
         }
     }
@@ -139,25 +160,25 @@ public class MyImageFilteringEngineTest {
         assert_equal(expectedOutputImage, actualOutputImage);
     }
 
+
     @Test
-    private void testGaussianContour_FourCircles() throws IOException {
+    public void testGaussianContour_FourCircles() throws IOException {
 
         BufferedImage inputImage = ImageIO.read(new File("./TEST_IMAGES/FourCircles.png"));
-        BufferedImage expectedOutputImage = ImageIO.read(
-                new File("./TEST_IMAGES/FourCircles_Gray_Contour.png"));
+        BufferedImage expectedOutputImage = ImageIO.read(new File("./TEST_IMAGES/FourCircles_gaussian_contour.png"));
         MyImageFilteringEngine engine = new MyImageFilteringEngine();
         engine.setImg(inputImage);
         engine.applyFilter(new GrayLevelFilter());
         engine.applyFilter(new GaussianContourExtractorFilter());
 
         try {
-            engine.writeOutPngImage("./TEST_IMAGES/FourCircles_Gray_Contour_TEST.png");
+            engine.writeOutPngImage("./TEST_IMAGES/FourCircles_Gaussian_Contour_TEST.png");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         BufferedImage actualOutputImage = ImageIO.read(
-                new File("./TEST_IMAGES/FourCircles_Gray_Contour_TEST.png"));
+                new File("./TEST_IMAGES/FourCircles_Gaussian_Contour_TEST.png"));
 
         assert_equal(expectedOutputImage, actualOutputImage);
     }
@@ -189,7 +210,7 @@ public class MyImageFilteringEngineTest {
 
         for (int y = 0; y < expected.getHeight(); y++) {
             for (int x = 0; x < expected.getWidth(); x++) {
-                Assert.assertEquals(Integer.toHexString(expected.getRGB(x, y)), Integer.toHexString(actual.getRGB(x, y)));
+                Assert.assertEquals("look on "+ x +", "+ y,Integer.toHexString(expected.getRGB(x, y)), Integer.toHexString(actual.getRGB(x, y)));
             }
         }
     }
