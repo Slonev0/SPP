@@ -11,7 +11,6 @@ public class Worker extends Thread{
     private int endY;
     private int width;
     private int height;
-    private int[] pixels;
     private IFilter filter;
     private BufferedImage MyImg;
     private BufferedImage outputImg;
@@ -93,14 +92,6 @@ public class Worker extends Thread{
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public int[] getPixels() {
-        return pixels;
-    }
-
-    public void setPixels(int[] pixels) {
-        this.pixels = pixels;
     }
 
     public IFilter getFilter() {
